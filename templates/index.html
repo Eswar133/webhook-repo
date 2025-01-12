@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Actions</title>
+</head>
+<body>
+    <h1>Latest GitHub Actions</h1>
+    <ul id="actions-list"></ul>
+
+    <script>
+        async function fetchLatestActions() {
+            const response = await fetch('/latest_actions');
+            const actions = await response.json();
+            const actionsList = document.getElementById('actions-list');
+            actionsList.innerHTML = actions.map(action => {
+                let message;
+                if (action.action === 'PUSH') {
+                    message = `${action.author} pushed to ${action.to_branch} on ${action.timestamp}`;
+                } else if (action.action === 'PULL_REQUEST') {
+                    message = `${action.author} submitted a pull request from ${action.from_branch} to ${action.to_branch} on ${action.timestamp}`;
+                } else if (action.action === 'MERGE') {
+                    message = `${action.author} merged branch ${action.from_branch} to ${action.to_branch} on ${action.timestamp}`;
+                }
+                return `<li>${message}</li>`;
+            }).join('');
+        }
+
+        // Poll every 15 seconds
+        setInterval(fetchLatestActions, 15000);
+        fetchLatestActions(); // Initial fetch
+    </script>
+</body>
+</html>
