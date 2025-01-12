@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from pymongo import MongoClient
+import os
 from datetime import datetime
 
 app = Flask(__name__)
 
 # MongoDB connection
-client = MongoClient('mongodb+srv://manikantapadala358:2RQG5wTO8igTrCqk@cluster0.sntr3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+client = MongoClient(os.getenv("MONGoDB_URI"))
 db = client['github_actions']
 collection = db['actions']
 
