@@ -10,7 +10,6 @@ client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['github_actions']
 collection = db['actions']
 
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     data = request.json
@@ -69,7 +68,6 @@ def webhook():
         return jsonify({'status': 'success'}), 200
 
     return jsonify({'status': 'no action recorded'}), 400
-
 
 @app.route('/latest_actions', methods=['GET'])
 def latest_actions():
